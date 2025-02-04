@@ -13,10 +13,12 @@ const checkIsAdmin = async (userId) => {
 
 const voteHandler = async (req, res) => {
   const candidateId = req.params.candidateId;
+  console.log("Candidate id id :",candidateId);
   const userId = req.userToken.id;
   try {
     const candidate = await Candidate.findById(candidateId);
     if (!candidate) {
+      console.log("Candidate null :",candidate);
       return res.send({
         response: null,
         message: "Candidate not found",

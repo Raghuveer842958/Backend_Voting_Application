@@ -50,6 +50,7 @@ const candidateHandler = async (req, res) => {
     return res.send({
       response: err,
       message: "Error in /candidate route",
+      
       result: false,
     });
   }
@@ -98,6 +99,5 @@ router.put(
   jwtAuthMiddleware,
   updateProfileHandler
 );
-router.delete("/candidate/delete");
 
 module.exports = router;

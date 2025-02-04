@@ -40,44 +40,6 @@ const registerHandler = async (req, res) => {
 };
 
 const loginHandler = async (req, res) => {
-  // try {
-  //   const { aadharNo, userPassword } = req.body;
-  //   const user = await User.findOne({ aadharNo: aadharNo });
-  //   if (!user) {
-  //     return res.send({
-  //       response: null,
-  //       message: "Invalid User email id ",
-  //       result: false,
-  //     });
-  //   }
-  //   if (!user.comparePassword(userPassword)) {
-  //     return res.send({
-  //       response: null,
-  //       message: "Invalid User Password ",
-  //       result: false,
-  //     });
-  //   }
-  //   const payload = {
-  //     id: user.id,
-  //   };
-  //   // const token = jwt.sign({ id: newUser._id }, JWT_SECRET, { expiresIn: '1h' });
-  //   const token = jwt.sign(payload, "Raghu", { expiresIn: 30000 });
-  //   // return res.json({ token });
-  //   res.cookie("token", token);
-  //   return res.send({
-  //     response: user,
-  //     message: "You are successfully Logined",
-  //     result: true,
-  //   });
-  // } catch (err) {
-  //   console.log("error is :", err);
-  //   return res.send({
-  //     error: err,
-  //     message: "Error in Login Route........",
-  //     result: false,
-  //   });
-  // }
-
   try {
     const { aadharNo, userPassword } = req.body;
     const user = await User.findOne({ aadharNo });
@@ -147,7 +109,7 @@ const profileHandler = async (req, res) => {
   }
 };
 
-const updateProfileHandler = async (req, res) => {
+const updateProfilePassword = async (req, res) => {
   const userData = req.userToken;
   console.log("User Data is :", userData);
   try {
@@ -182,7 +144,6 @@ const updateProfileHandler = async (req, res) => {
 const resultHandler = async (req, res) => {
   try {
     const partiesData = await partiesModel.find();
-    console.log("User Token is :", token);
     return res.send({
       response: partiesData,
       message: "parties data fetch successfully",
@@ -207,7 +168,7 @@ const createParties = async (req, res) => {
         result: false,
       });
     }
-    const data = new partiesModel({ name: partiesName, votes: voteCount });
+    const data = new partiesModel({ name: partiesName, votes: voteCount?voteCount:0 });
     const temp = await data.save();
     return res.send({
       response: temp,
@@ -226,7 +187,7 @@ const createParties = async (req, res) => {
 router.post("/register", registerHandler);
 router.post("/login", loginHandler);
 router.get("/profile", jwtAuthMiddleware, profileHandler);
-router.put("/profile/updatePassword", jwtAuthMiddleware, updateProfileHandler);
+router.put("/profile/updatePassword", jwtAuthMiddleware, updateProfilePassword);
 router.get("/result", resultHandler);
 router.post("/createParties", createParties);
 
